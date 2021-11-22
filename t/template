@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Test::More;
+
+use Attribute::Pure;
+
+sub double { 2 * shift; }
+
+sub double_all { map { 2 * shift } @_ }
+
+sub positive_integers { 1 .. shift } # context dependant!
+
+done_testing;
