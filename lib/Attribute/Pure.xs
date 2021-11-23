@@ -218,6 +218,12 @@ static int setup_callchecker(CV* sub, U8 want)
 
 	assert(want == G_SCALAR || want == G_ARRAY);
 
+	if (CvFLAGS(sub) & CVf_LVALUE)
+	{
+		croak("Cannot apply :Pure/:PureList to an :lvalue sub");
+		return 0;
+	}
+
 	cv_get_call_checker_flags(sub, 0, &current, &cobj, &cflags);
 	if (current == NULL || current == Perl_ck_entersub_args_proto_or_list)
 	{
