@@ -245,7 +245,7 @@ static int setup_callchecker(CV* sub, U8 want)
 	else if ((current == ck_pure_sub_scalar && want == G_ARRAY) ||
 		(current == ck_pure_sub_list && want == G_SCALAR))
 	{
-		croak("Cannot apply both :pure and :purelist to the same sub");
+		croak("Cannot apply both :Pure and :Purelist to the same sub");
 		return 0;
 	}
 	else
@@ -301,11 +301,10 @@ is_pure(CV* sub) ;
 
 int
 contains_impurities(CV* sub)
-	CODE:
+	PPCODE:
 	{
-		RETVAL = 0; /* Vacuous false if the sub turns out to be empty */
 		if (CvISXSUB(sub))
-			Perl_croak(aTHX_ "Not valid for XSUBs");
+			XSRETURN_NO;
 		OP* top = CvROOT(sub);
 		for (OP* current = top; current; current = next_op(aTHX_ top, current))
 		{
@@ -319,6 +318,8 @@ contains_impurities(CV* sub)
 				CV* cv = rv2cv_op_cv(aop, 0);
 				if (!cv)
 				{
+					// Note that we also get here if the AMPER flag is set, e.g. &thing
+					// Report such calls as 'impurities' regardless.
 					if (aop->op_type == OP_NULL && aop->op_targ == OP_RV2CV && cUNOPx(aop)->op_first->op_type == OP_GV)
 					{
 						OP* svop = cUNOPx(aop)->op_first;
@@ -334,7 +335,8 @@ contains_impurities(CV* sub)
 				}
 				if (!cv)
 				{
-					Perl_croak(aTHX_ "What this should be defined?");
+					// No recognizable target pattern, so it's probably not compile-time detectable in the first place.
+					continue;
 				}
 				if (is_pure(cv))
 				{

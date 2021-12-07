@@ -2,6 +2,8 @@ use strict;
 use warnings;
 package Attribute::Pure 0.01;
 
+use Carp ();
+
 # ABSTRACT: Make any perl sub inlineable, not just constant ones
 
 use XSLoader;
@@ -29,7 +31,7 @@ sub MODIFY_CODE_ATTRIBUTES {
 }
 
 sub import {
-	my $t = caller()//die("Can't figure out which packaage to import into");
+	my $t = caller()//Carp::croak("Can't figure out which packaage to import into");
 	no strict 'refs';
 	push @{$t . "::ISA"}, __PACKAGE__;
 }
