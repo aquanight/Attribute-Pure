@@ -31,7 +31,7 @@ sub MODIFY_CODE_ATTRIBUTES {
 }
 
 sub import {
-	my $t = caller()//Carp::croak("Can't figure out which packaage to import into");
+	my $t = caller()//Carp::croak("Can't figure out which package to import into");
 	no strict 'refs';
 	push @{$t . "::ISA"}, __PACKAGE__;
 }
