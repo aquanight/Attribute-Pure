@@ -5,6 +5,7 @@ package Attribute::Pure;
 our $VERSION = '0.01';
 
 use Carp ();
+use mro ();
 
 # ABSTRACT: Make any perl sub inlineable, not just constant ones
 
@@ -12,7 +13,7 @@ use XSLoader;
 
 XSLoader::load(__PACKAGE__, $VERSION);
 
-sub MODIFY_CODE_ATTRIBUTES {
+sub Attribute::Pure::Attr::MODIFY_CODE_ATTRIBUTES {
 	my ($pkg, $cv, @attr) = @_;
 	
 	for (my $ix = 0; $ix < @attr; ) {
@@ -29,13 +30,13 @@ sub MODIFY_CODE_ATTRIBUTES {
 		}
 	}
 
-	return @attr;
+	return $pkg->next::can ? $pkg->next::method(@attr) : @attr;
 }
 
 sub import {
 	my $t = caller()//Carp::croak("Can't figure out which package to import into");
 	no strict 'refs';
-	push @{$t . "::ISA"}, __PACKAGE__;
+	push @{$t . "::ISA"}, 'Attribute::Pure::Attr';
 }
 
 1;
