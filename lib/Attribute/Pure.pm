@@ -52,8 +52,14 @@ Attribute::Pure - make any perl sub inlineable
 Perl natively allows subroutines satisfying specific constraints to be "inlined" into the calling code.
 
 Such subroutines are known as "L<perlsub/Constant Functions|constant functions>", and their constraints are:
--> Must have a prototype consisting of an empty string
--> Must consist of exactly a single constant expression.
+
+=over 4
+
+=item * Must have a prototype consisting of an empty string
+
+=item * Must consist of exactly a single constant expression.
+
+=back
 
 In addition to these constant subroutines, perl supports the notion of "constant folding", like many other languages, in which
 combinations of constants, operators (such as C<+> and C<*>), and builtin functions (such as C<sqrt> and C<atan2>) can be condensed to a single
@@ -85,11 +91,20 @@ argument was present.
 
 It is not necessarily possible to reliably determine that a :Pure or :PureList sub is being evaluated as a "pure call". If for some reason you
 truly need to know, some options you might look for:
--> Somewhere in the L<perlfunc/caller|caller()> stack you will find an 'C<eval { ... }>' frame. It will very likely be the most immediate frame.
--> Naturally every single one of your arguments are constants and as such have C<SvREADONLY> set.
--> Said eval frame is likely to be either the bottom-most frame, or on top of a require, do, or (string) eval frame.
--> If your sub is used by the 'main' code, you might find that C<${^GLOBAL_PHASE} eq "START">.
--> If your sub is used in the same file, you'll find that exec-time code has not yet run, and only BEGIN blocks up to the call site have.
+
+=over 4
+
+=item * Somewhere in the L<perlfunc/caller|caller()> stack you will find an 'C<eval { ... }>' frame. It will very likely be the most immediate frame.
+
+=item * Naturally every single one of your arguments are constants and as such have C<SvREADONLY> set.
+
+=item * Said eval frame is likely to be either the bottom-most frame, or on top of a require, do, or (string) eval frame.
+
+=item * If your sub is used by the 'main' code, you might find that C<${^GLOBAL_PHASE} eq "START">.
+
+=item * If your sub is used in the same file, you'll find that exec-time code has not yet run, and only BEGIN blocks up to the call site have.
+
+=back
 
 In addition to the inlining behavior, a subroutine marked :Pure will always run as if it was called in scalar context, regardless of how it was
 actually called, and likewise a subroutine marked :PureList will always run as if it was called in list context, regardless of how it was
