@@ -3,6 +3,7 @@ use warnings;
 package Attribute::Pure 0.01;
 
 use Carp ();
+use mro ();
 
 # ABSTRACT: Make any perl sub inlineable, not just constant ones
 
@@ -27,7 +28,7 @@ sub Attribute::Pure::Attr::MODIFY_CODE_ATTRIBUTES {
 		}
 	}
 
-	return @attr;
+	return $pkg->next::can ? $pkg->next::method(@attr) : @attr;
 }
 
 sub import {
