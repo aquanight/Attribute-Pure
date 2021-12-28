@@ -5,6 +5,7 @@
 *.o
 *.pm.tdy
 *.bs
+lib/**/*.c
 
 # Devel::Cover
 /cover_db/
