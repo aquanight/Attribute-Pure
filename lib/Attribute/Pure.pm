@@ -1,6 +1,8 @@
 use strict;
 use warnings;
-package Attribute::Pure 0.01;
+package Attribute::Pure;
+
+our $VERSION = '0.01';
 
 use Carp ();
 
@@ -8,7 +10,7 @@ use Carp ();
 
 use XSLoader;
 
-XSLoader::load(__PACKAGE__, our $VERSION);
+XSLoader::load(__PACKAGE__, $VERSION);
 
 sub MODIFY_CODE_ATTRIBUTES {
 	my ($pkg, $cv, @attr) = @_;
