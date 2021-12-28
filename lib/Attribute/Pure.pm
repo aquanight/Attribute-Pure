@@ -54,7 +54,7 @@ Attribute::Pure - make any perl sub inlineable
 
 Perl natively allows subroutines satisfying specific constraints to be "inlined" into the calling code.
 
-Such subroutines are known as "L<perlsub/Constant Functions|constant functions>", and their constraints are:
+Such subroutines are known as "L<constant functions|perlsub/"Constant Functions">", and their constraints are:
 
 =over 4
 
@@ -97,7 +97,7 @@ truly need to know, some options you might look for:
 
 =over 4
 
-=item * Somewhere in the L<perlfunc/caller|caller()> stack you will find an 'C<eval { ... }>' frame. It will very likely be the most immediate frame.
+=item * Somewhere in the L<caller()|perlfunc/"caller"> stack you will find an 'C<eval { ... }>' frame. It will very likely be the most immediate frame.
 
 =item * Naturally every single one of your arguments are constants and as such have C<SvREADONLY> set.
 
