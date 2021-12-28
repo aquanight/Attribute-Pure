@@ -1,4 +1,3 @@
-!Build/
 .last_cover_stats
 /META.yml
 /META.json
@@ -8,7 +7,7 @@
 *.bs
 
 # Devel::Cover
-cover_db/
+/cover_db/
 
 # Devel::NYTProf
 nytprof.out
@@ -17,12 +16,9 @@ nytprof.out
 /.build/
 
 # Module::Build
-_build/
-Build
-Build.bat
-
-# Module::Install
-inc/
+/_build/
+/Build
+/Build.bat
 
 # ExtUtils::MakeMaker
 /blib/
@@ -36,3 +32,6 @@ inc/
 
 # vim swap files
 .*.swp
+
+/Attribute-Pure-*.tar.gz
+/Attribute-Pure-*/
