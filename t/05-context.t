@@ -21,7 +21,7 @@ sub double_all :PureList {
 
 sub positive_integers :PureList {
 	$w = wantarray;
-	1 .. shift
+	2 .. shift
 } # context dependant!
 
 my $z;
@@ -47,10 +47,10 @@ cmp_ok($z, '==', 4, "Scalarized list constant is the number of items");
 BEGIN { ok(defined ($w) && !$w, "Pure scalar sub stays scalar context when called in list"); }
 
 
-$. = 0; # scalar flipflop?
+$. = 0; # If .. goes scalar it becomes flipflop, and scalar(2 .. shift) -> scalar( ($. == 2) .. shift)
 $z = positive_integers 9;
 BEGIN { ok($w, "This also stayed in list context"); }
-cmp_ok($z, '==', 9, "Scalarized list is the number of items");
+cmp_ok($z, '==', 8, "Scalarized list is the number of items");
 
 $. = 7;
 $z = double_all 1 .. $.;
@@ -63,11 +63,11 @@ is_deeply(\@z, [14], "Sanity exists");
 
 $z = positive_integers($. * 2);
 ok($w, "This too stayed in list context and didn't turn into a flipflop");
-cmp_ok($z, '==', 14, "And is still the number of items");
+cmp_ok($z, '==', 13, "And is still the number of items");
 
-# Now for the monkey wrench:
+# Now for the monkey wrench: &name calling disables all forms of "sub mangling", both 
 $z = &positive_integers(8);
-ok(defined($w) && !$w, "ampersand bypass suppressed auto context");
+ok(defined($w) && !$w, "ampersand bypass suppresses forced context");
 ok(!$z, "flip-flop works");
 
 done_testing;
