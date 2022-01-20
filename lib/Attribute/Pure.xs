@@ -188,6 +188,9 @@ nope:
 
 static OP* ck_pure_sub_scalar(pTHX_ OP* entersub, GV* namegv, SV* protosv)
 {
+	// Abort purecalls if there's been a parser error.
+	if (PL_parser && PL_parser->error_count) return entersub;
+
 	OP* result = ck_pure_sub(aTHX_ op_contextualize(entersub, G_SCALAR), namegv, protosv);
 	
 	if (entersub == result)
@@ -199,6 +202,9 @@ static OP* ck_pure_sub_scalar(pTHX_ OP* entersub, GV* namegv, SV* protosv)
 
 static OP* ck_pure_sub_list(pTHX_ OP* entersub, GV* namegv, SV* protosv)
 {
+	// Abort purecalls if there's been a parser error.
+	if (PL_parser && PL_parser->error_count) return entersub;
+
 	OP* result = ck_pure_sub(aTHX_ op_contextualize(entersub, G_ARRAY), namegv, protosv);
 	
 	if (entersub == result)
