@@ -150,7 +150,7 @@ static OP* ck_pure_sub(pTHX_ OP* entersub, GV* namegv, SV* protosv)
 				SP = MARK;
 				PUTBACK;
 				ret = newUNOP(OP_RV2AV, OPf_PARENS, newSVOP(OP_CONST, 0, sv));
-				if (AvFILLp(sv) != 1)
+				if (AvFILLp(sv) != -1)
 				{
 					for (SV** svp = AvARRAY(sv) + AvFILLp(sv); svp >= AvARRAY(sv); --svp)
 					{
